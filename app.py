@@ -324,9 +324,8 @@ if st.session_state['page3']:
     recipe = recipe_generator(st.session_state['scored_ingredients'])
 
     # final_recipe = final_recipes(recipe, scores, model)
-    image_path = image_generator(recipe)
+    # image_path = image_generator(titles1)
 
-    st.write(st.session_state['scored_ingredients'])
 
     scores = []
     recipe_direction = []
@@ -353,9 +352,9 @@ if st.session_state['page3']:
 
     # re-assigning variables to fit page switch format
     # not necessary but keeping for simplicity
-    st.session_state['titles'] = titles[0]
-    st.session_state['ingredients'] = ingredients[0]
-    st.session_state['directions'] = contents[0]
+    st.session_state['titles'] = titles
+    st.session_state['ingredients'] = ingredients
+    st.session_state['directions'] = contents
 
     # Model predicts probabilities:
     st.session_state['scores'] = scores

@@ -37,7 +37,6 @@ Output:
 def count_verified_pairings(combination, verified_pairings):
     count = 0
     for pair in itertools.combinations(combination, 2):
-        print(pair[0])
         if pair in verified_pairings or (pair[1], pair[0]) in verified_pairings:
             count += 1
     return count
@@ -46,29 +45,28 @@ def count_verified_pairings(combination, verified_pairings):
 # Function to find the top 3 largest acceptable groups of ingredients
 # Input: user input (string) ingredients
 # Output: 3 ingredients combinations (list) candidates
-def find_top_3_groups(ingredients, verified_pairings):
+# def find_top_3_groups(ingredients, verified_pairings):
 
-    ingredients = [ingredient.strip() for ingredient in ingredients.split(',')]
-    n = len(ingredients)
-    valid_combinations = []  # Store all combinations that meet the criteria
+#     ingredients = [ingredient.strip() for ingredient in ingredients.split(',')]
+#     n = len(ingredients)
+#     valid_combinations = []  # Store all combinations that meet the criteria
 
-    # Generate and check all combinations for meeting the required pairings
-    for size in range(n, 1, -1):  # We start from n and go down since we're interested in larger groups first
-        for combination in itertools.combinations(ingredients, size):
-            print(combination)
-            required_pairings = size * (size - 1) / 2 * 0.8
-            verified_count = count_verified_pairings(combination, verified_pairings)
-            if verified_count >= required_pairings:
-                valid_combinations.append(combination)  # Add valid combination to the list
+#     # Generate and check all combinations for meeting the required pairings
+#     for size in range(n, 1, -1):  # We start from n and go down since we're interested in larger groups first
+#         for combination in itertools.combinations(ingredients, size):
+#             required_pairings = size * (size - 1) / 2 * 0.8
+#             verified_count = count_verified_pairings(combination, verified_pairings)
+#             if verified_count >= required_pairings:
+#                 valid_combinations.append(combination)  # Add valid combination to the list
 
-    # Sort the valid combinations by their size (number of ingredients) in descending order
-    valid_combinations.sort(key=lambda x: len(x), reverse=True)
-    print('====================')
-    print(valid_combinations)
-    # print(verified_pairings)
-    print('====================')
-    # Return the top 3 largest groups, but there might be fewer than 3
-    return valid_combinations[:3]
+#     # Sort the valid combinations by their size (number of ingredients) in descending order
+#     valid_combinations.sort(key=lambda x: len(x), reverse=True)
+#     print('====================')
+#     print(valid_combinations)
+#     # print(verified_pairings)
+#     print('====================')
+#     # Return the top 3 largest groups, but there might be fewer than 3
+#     return valid_combinations[:3]
 
 """End of new compatibility function"""
 
