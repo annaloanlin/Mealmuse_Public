@@ -1,5 +1,5 @@
 import streamlit as st
-from utils.functions import final_recipes, combinations_of_two, data_query, final_recipes, muse_comb, recipe_generator, image_generator
+from utils.functions import combinations_of_two, data_query, get_scores, get_final_recipes, muse_comb, recipe_generator, image_generator
 import pandas as pd
 import pickle
 
@@ -11,20 +11,11 @@ import pickle
 
 # Set page session states
 if 'page1' not in st.session_state:
-    st.session_state['page1'] = True
+    st.session_state['page1'] = False
 if 'page2' not in st.session_state:
-    st.session_state['page2'] = False
+    st.session_state['page2'] = True
 if 'page3' not in st.session_state:
     st.session_state['page3'] = False
-
-
-
-if 'verified_pairings' not in st.session_state:
-    filtered_df = pd.read_parquet('data/Halved-DF.parquet.gzip')
-    ingredient1 = filtered_df['ingredient1'].str.strip("'")
-    ingredient2 = filtered_df['ingredient2'].str.strip("'")
-    verified_pairings = set(zip(ingredient1, ingredient2))
-    st.session_state['verified_pairings'] = verified_pairings
 
 
 # ##############################################################
@@ -285,79 +276,44 @@ if st.session_state['page3']:
             model = pickle.load(f)
         return model
 
+    # Initiate the model
     model = get_model()
 
+    # Load the dataframe
     df = pd.read_parquet('data/Halved-DF.parquet.gzip')
-    # set user input as ingredients
-    ingredients = st.session_state['ingredients']
-    # find_top_3_groups = combinations_of_two > data_query > muse_comb
 
-    # PSEUDO CODE
-    # combinations_of_two(ingredients_input) > ingredients_combinations
-    # data_query(df, ingredients_combinations) > df_comb
-    # muse_comb(data_query, df) > ingredients_list
 
-    ingredients_combinations = combinations_of_two(ingredients)
-    df_comb = data_query(df, ingredients_combinations)
+
+    # Set user input as ingredients_input (bring from page 2 in st.session_state format)
+    ingredients_input = st.session_state['ingredients']
+
+
+    # Function calls
+
+    ingredients_combinations = combinations_of_two(ingredients_input)
+    # ingredients_combinations = list containing tuples and lists
+
+    df_comb = data_query(ingredients_combinations)
+    # df_comb = datafrome with 2 columns: 'Combination' and 'Score'
+
     ingredients_list = muse_comb(df_comb)
-    st.session_state['scored_ingredients'] = ingredients_list
+    # ingredients_list = list of 3 lists
 
+    recipe_list = recipe_generator(ingredients_list)
+    # recipe_list = list of 3 dictionaries
 
-    # verified_pairings = st.session_state['verified_pairings']
-    # candidates = find_top_3_groups(ingredients, verified_pairings)
-    # print(candidates)
-    # # re-assign ingredient pairings to new variable:
-    # st.session_state['scored_ingredients'] = candidates
-    # # candidates = 3 ingredient combinations and their scores
+    scores = get_scores(recipe_list)
+    # scores = list of 3 integers
 
+    final_recipes = get_final_recipes(recipe_list, scores, model)
+    # final_recipes = 1 dictionary with 3 keys:
+    #     'title': list of 3 strings, each string containing recipe title
+    #     'ingredients': list of 3 strings, each string containing recipe ingredients
+    #     'directions': list of 3 strings, each string containing recipe directions
 
-    contents, titles, ingredients = [], [], []
-    contents1, titles1, ingredients1, scores = [], [], [], []  ##<==== changed the variables a bit so the variables below will not be affected
-    # st.session_state['scored_ingredients'] = ingredient combinations and scores
+    image_urls = image_generator(final_recipes)
+    # image_urls = list of 3 strings, each string containing image url
 
-    # PSEUDO CODE
-    # recipe = recipe_generator(st.session_state['scored_ingredients']) > recipe (list)
-    # recipe_dicts = convert_to_dictionary(recipe)
-    # final_recipe = final_recipes(recipe_dict, scores, model)
-    # image_path = image_generator(recipe)
-
-    recipe = recipe_generator(st.session_state['scored_ingredients'])
-
-    # final_recipe = final_recipes(recipe, scores, model)
-    # image_path = image_generator(titles1)
-
-
-    scores = []
-    recipe_direction = []
-
-    for recip in recipe:
-        if 'directions' in recip:
-            recipe_direction.append(recip['directions'])
-        else:
-            recipe_direction.append("")
-
-    for direction in recipe_direction:
-        scores.append(model.predict_proba([direction])[0][1])
-
-    titles1 = [n['title'] for n in recipe]
-    ingredient1 = [n['ingredients'] for n in recipe]
-    contents1 = [n['directions'] for n in recipe]
-
-    recipe_dict = {'title': titles1, 'ingredients': ingredients1, 'directions': contents1}
-    final_recipe = final_recipes(recipe, scores, model) ##<===added the regenerator and reassigned the titles, ingredients, and contents variables to reflect the final recipes
-    titles.append(final_recipe["Title"])
-    ingredients.append(final_recipe["Ingredients"])
-    contents.append(final_recipe["Directions"])
-
-
-    # re-assigning variables to fit page switch format
-    # not necessary but keeping for simplicity
-    st.session_state['titles'] = titles
-    st.session_state['ingredients'] = ingredients
-    st.session_state['directions'] = contents
-
-    # Model predicts probabilities:
-    st.session_state['scores'] = scores
 
 
     # Columns
@@ -406,34 +362,32 @@ if st.session_state['page3']:
     </style>""", unsafe_allow_html=True)
 
 
-    img_list = []
-    for title in st.session_state['titles']:
-        if title != None:
-            img = image_generator(title)
-            img_list.append(img)
+
+
+
 
     with st.container():
 
-        dishes = [f'Dish {n+1}' for n in range(len(st.session_state['ingredients']))]
+        dishes = [f'Dish {n+1}' for n in range(len(final_recipes['title']))]
+
         for index, tab in enumerate(st.tabs(dishes)):
 
-
             with tab:
-                st.subheader(st.session_state['titles'][index])
+                st.subheader(final_recipes['title'][index])
 
                 col1, col2, col3 = st.columns([1, 2, 1])
                 with col1:
                     st.subheader('Ingredients')
-                    if index < len(st.session_state['ingredients']):
-                        st.write(st.session_state['ingredients'][index])
+                    if index < len(final_recipes['ingredients']):
+                        st.write(final_recipes['ingredients'][index])
                 with col2:
-                    st.subheader('Instructions')
-                    if index < len(st.session_state['directions']):
-                        st.write(st.session_state['directions'][index])
+                    st.subheader('Directions')
+                    if index < len(final_recipes['directions']):
+                        st.write(final_recipes['directions'][index])
                 with col3:
                     st.subheader('Image')
-                    if index < len(img_list):
-                        st.image(img_list[index], width=200)
+                    if index < len(image_urls):
+                        st.image(image_urls[index], width=200)
 
 
     # tab styles
