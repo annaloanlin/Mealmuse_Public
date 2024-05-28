@@ -144,10 +144,10 @@ if st.session_state['page2']:
 
     col2.markdown("<h3 style='text-align: center; color: grey; font-size:20px'>An AI-powered recipe generator that utilizes Machine Learning to offer customized cooking suggestions based on avalable ingredients</h3>", unsafe_allow_html=True)
 
-    # Images left, right and title background
-    st.image('mealmuse_images/circleobjectleft.png')
-    st.image('mealmuse_images/circleobjectright.png')
-    st.image('mealmuse_images/centerobjects.png')
+    # # Images left, right and title background
+    # st.image('mealmuse_images/circleobjectleft.png')
+    # st.image('mealmuse_images/circleobjectright.png')
+    # st.image('mealmuse_images/centerobjects.png')
 
     # evaluate button
     st.markdown("""
@@ -325,10 +325,10 @@ if st.session_state['page3']:
     col2.markdown("<h2 style='text-align: center; color: grey; font-size:20px'>Turn What You have to What You Crave &#128512; </h2>", unsafe_allow_html=True)
     #col2.markdown("<h3 style='text-align: center; color: black; font-size:10px'>Enter Your Ingredients</h3>", unsafe_allow_html=True)
 
-    # Background images
-    st.image('mealmuse_images/circleobjectleft.png')
-    st.image('mealmuse_images/circleobjectright.png')
-    st.image('mealmuse_images/centerobjects.png')
+    # # Background images
+    # st.image('mealmuse_images/circleobjectleft.png')
+    # st.image('mealmuse_images/circleobjectright.png')
+    # st.image('mealmuse_images/centerobjects.png')
 
     # left background image styles
     st.markdown("""
