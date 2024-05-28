@@ -38,9 +38,9 @@ if st.session_state['page1']:
     start_button = col2.button('START')
 
     # Images left, right and title background
-    st.image('mealmuse_images/circleobjectleft.png')
-    st.image('mealmuse_images/circleobjectright.png')
-    st.image('mealmuse_images/centerobjects.png')
+    # st.image('mealmuse_images/circleobjectleft.png')
+    # st.image('mealmuse_images/circleobjectright.png')
+    # st.image('mealmuse_images/centerobjects.png')
 
     # Start button styles
     st.markdown("""
