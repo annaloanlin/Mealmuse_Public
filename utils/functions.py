@@ -14,7 +14,8 @@ import matplotlib.image as mpimg
 from gradio_client import Client
 from groq import Groq
 
-import utils.config as config
+# only use for local testing
+# import utils.config as config
 
 
 def get_model():
@@ -170,7 +171,7 @@ def recipe_generator(ingredients_lists):
     '''
 
 
-    api_key = config.api_key2
+    api_key = st.secrets['api_key2']
     client = Groq(
     api_key=api_key
     )
