@@ -2,7 +2,7 @@ import streamlit as st
 from utils.functions import combinations_of_two, data_query, get_scores, get_final_recipes, muse_comb, recipe_generator, image_generator
 import pandas as pd
 import pickle
-
+from json.decoder import JSONDecodeError
 
 
 
@@ -299,8 +299,35 @@ if st.session_state['page3']:
     ingredients_list = muse_comb(df_comb)
     # ingredients_list = list of 3 lists
 
-    recipe_list = recipe_generator(ingredients_list)
-    # recipe_list = list of 3 dictionaries
+
+
+# ---------------------------------------------------------
+# ---------------------------------------------------------
+# UNDER CONSTRUCTION
+
+# implementing new recipe_generator function
+    recipe_list = []
+    # code snippet to handle recipe_generator with JSONDecodeError
+    attempt = 0
+    retry_limit = 1
+    while attempt < retry_limit:
+        try:
+            recipe_list = recipe_generator(ingredients_list)
+            break
+        except JSONDecodeError as e:
+            attempt += 1
+    print('recipe_list:', recipe_list)# debug code-------------------------------remove later
+
+    # recipe_list = recipe_generator(ingredients_list)
+    # # recipe_list = list of 3 dictionaries
+
+
+
+# UNDER CONSTRUCTION
+# ---------------------------------------------------------
+# ---------------------------------------------------------
+
+
 
     scores = get_scores(recipe_list)
     # scores = list of 3 integers
