@@ -161,7 +161,7 @@ import os
 from json.decoder import JSONDecodeError
 
 load_dotenv()
-goog_api_key = os.getenv('goog_api_key') # create a variable in .env file 'GOOGLE_API_KEY' and add the api key there
+goog_api_key = os.getenv('GOOGLE_API_KEY') # create a variable in .env file 'GOOGLE_API_KEY' and add the api key there
 
 
 def recipe_generator(lists):
@@ -170,15 +170,40 @@ def recipe_generator(lists):
     recipe_list = []
 
     if len(lists) == 1:
-        response = model.generate_content(f"Suggest a recipe only with the ingredients of {lists[0]}. The final format is a json with keys of title, ingredients and directions only, ```remove the backticks and json in the final output```")
+        response = model.generate_content(f"""Suggest a recipe only with the ingredients of {lists[0]}.
+                                          The final format is a dictionary with keys of title, ingredients and directions only.
+                                          The dictionary values should be one string, not a list.
+                                          Make sure to remove the backticks and json in the final output.
+                                          Example output:
+                                            {{
+                                                'title': 'Recipe Title',
+                                                'ingredients': 'Ingredients',
+                                                'directions': 'Directions'
+                                            }}
+                                            """)
         recipe = response.text
-        recipe_list.append( json.loads(recipe))
+        print('first recipe', recipe) # debug code-------------------------------remove later
+        recipe_list.append(recipe)
+        print('first recipe list:', recipe_list) # debug code-------------------------------remove later
     else:
       for i in range(len(lists)):
-        response = model.generate_content(f"Suggest a recipe only with the ingredients of {lists[i]}. The final format is a json with keys of title, ingredients and directions only, ```remove the backticks and json in the final output```")
+        response = model.generate_content(f"""Suggest a recipe only with the ingredients of {lists[0]}.
+                                          The final format is a dictionary with keys of title, ingredients and directions only.
+                                          The dictionary values should be one string, not a list.
+                                          Make sure to remove the backticks and json in the final output.
+                                          Example output:
+                                            {{
+                                                'title': 'Recipe Title',
+                                                'ingredients': 'Ingredients',
+                                                'directions': 'Directions'
+                                            }}
+                                            """)
         recipe = response.text
-        recipe_list.append( json.loads(recipe))
-        print(recipe_list) # debug code-------------------------------remove later
+        print('recipe:', recipe) # debug code-------------------------------remove later
+        recipe_list.append(recipe)
+    print(recipe_list) # debug code-------------------------------remove later
+
+    return recipe_list
 
     return recipe_list
 
@@ -310,7 +335,7 @@ def get_final_recipes(recipe_list, scores, model):
     """
 
     final_recipes = {"title": [], "ingredients": [], "directions": []}
-    threshold = 0.5
+    threshold = 0.3
 
     for i in range(len(recipe_list)):
         if scores[i] >= threshold:
