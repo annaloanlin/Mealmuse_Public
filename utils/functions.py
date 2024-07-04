@@ -154,11 +154,9 @@ def muse_comb(df_comb):
 
 ##### new, implementing:
 # ----------------------------
-import json
 import google.generativeai as genai
 from dotenv import load_dotenv
 import os
-from json.decoder import JSONDecodeError
 
 load_dotenv()
 goog_api_key = os.getenv('GOOGLE_API_KEY') # create a variable in .env file 'GOOGLE_API_KEY' and add the api key there
@@ -174,12 +172,12 @@ def recipe_generator(lists):
                                           The final format is a dictionary with keys of title, ingredients and directions only.
                                           The dictionary values should be one string, not a list.
                                           Make sure to remove the backticks and json in the final output.
-                                          Example output:
-                                            {{
-                                                'title': 'Recipe Title',
-                                                'ingredients': 'Ingredients',
-                                                'directions': 'Directions'
-                                            }}
+                                          Definitely do not deviate from the final output format:
+
+                                            'title': 'Recipe Title',
+                                            'ingredients': 'Ingredients',
+                                            'directions': 'Directions'
+
                                             """)
         recipe = response.text
         print('first recipe', recipe) # debug code-------------------------------remove later
@@ -187,25 +185,25 @@ def recipe_generator(lists):
         print('first recipe list:', recipe_list) # debug code-------------------------------remove later
     else:
       for i in range(len(lists)):
-        response = model.generate_content(f"""Suggest a recipe only with the ingredients of {lists[0]}.
+        response = model.generate_content(f"""Suggest a recipe only with the ingredients of {lists[i]}.
                                           The final format is a dictionary with keys of title, ingredients and directions only.
                                           The dictionary values should be one string, not a list.
                                           Make sure to remove the backticks and json in the final output.
-                                          Example output:
-                                            {{
-                                                'title': 'Recipe Title',
-                                                'ingredients': 'Ingredients',
-                                                'directions': 'Directions'
-                                            }}
+                                          Definitely do not deviate from the final output format:
+
+                                            'title': 'Recipe Title',
+                                            'ingredients': 'Ingredients',
+                                            'directions': 'Directions'
+
                                             """)
+        print(response) # debug code-------------------------------remove later
         recipe = response.text
         print('recipe:', recipe) # debug code-------------------------------remove later
         recipe_list.append(recipe)
-    print(recipe_list) # debug code-------------------------------remove later
+    print('final recipe_list from recipe_generator:', recipe_list) # debug code-------------------------------remove later
 
     return recipe_list
 
-    return recipe_list
 
 
 # def recipe_generator(ingredients_lists):
@@ -301,6 +299,7 @@ def get_scores(recipe_list):
     recipe_direction = []
 
     for recipe in recipe_list:
+        print('get_scores recipe: ', recipe)
         if 'directions' in recipe:
             recipe_direction.append(recipe['directions'])
         else:

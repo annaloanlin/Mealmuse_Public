@@ -316,7 +316,7 @@ if st.session_state['page3']:
             break
         except JSONDecodeError as e:
             attempt += 1
-    print('recipe_list:', recipe_list)# debug code-------------------------------remove later
+    print(len(recipe_list), 'recipe_list:', recipe_list)# debug code-------------------------------remove later
 
     # recipe_list = recipe_generator(ingredients_list)
     # # recipe_list = list of 3 dictionaries
