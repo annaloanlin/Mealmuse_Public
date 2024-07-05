@@ -275,11 +275,12 @@ def get_scores(recipe_list):
     recipe_direction = []
 
     for recipe in recipe_list:
-        print('get_scores recipe: ', recipe)
+        print('get_scores: ', recipe, recipe.keys())
         if 'directions' in recipe:
-            recipe_direction.append(recipe['directions'])
+            recipe_direction.append(recipe['directions'][0])
         else:
             recipe_direction.append("")
+        print('recipe_direction: ', recipe_direction) #-------------------debugging
 
     for direction in recipe_direction:
         scores.append(model.predict_proba([direction])[0][1])
