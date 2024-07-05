@@ -331,6 +331,7 @@ def get_final_recipes(recipe_list, scores, model):
                          }
             while n < 3:
                 new_recipe = recipe_generator([tmp_recipe["ingredients"]]) ###<=== insert actual recipe generator
+                print('new_recipe: ', new_recipe) #-------------------debugging
                 new_score = model.predict_proba([new_recipe[0]['directions']]) ###<=== insert the actual scoring model function here
                 if new_score[0][1] >= threshold:
                     final_recipes["title"].append(new_recipe[0]["title"])
@@ -345,7 +346,7 @@ def get_final_recipes(recipe_list, scores, model):
                 final_recipes["ingredients"].append(last_recipe[0]["ingredients"][0][0])
                 final_recipes["directions"].append(last_recipe[0]["directions"][0][0])
                 break  # Exit the outer loop to prevent an unending loop
-
+    print('final_recipes: ', final_recipes) #-------------------debugging
     return final_recipes
 
 '''--------------------------------------------------------------------------------------------------------------'''

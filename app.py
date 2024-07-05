@@ -406,11 +406,13 @@ if st.session_state['page3']:
                 with col1:
                     st.subheader('Ingredients')
                     if index < len(final_recipes['ingredients']):
-                        st.write(final_recipes['ingredients'][index])
+                        st.write(final_recipes['ingredients'][index][0])
+                        print('ingredients', final_recipes['ingredients'][index])
                 with col2:
                     st.subheader('Directions')
                     if index < len(final_recipes['directions']):
-                        st.write(final_recipes['directions'][index])
+                        st.write(final_recipes['directions'][index][0])
+                        print('directions', final_recipes['directions'][index])
                 with col3:
                     st.subheader('Image')
                     if index < len(image_urls):
