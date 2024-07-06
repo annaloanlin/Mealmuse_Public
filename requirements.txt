@@ -16,5 +16,4 @@ streamlit
 groq
 google.generativeai
 python-dotenv
-os
 json
