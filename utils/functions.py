@@ -159,8 +159,18 @@ import google.generativeai as genai
 from dotenv import load_dotenv
 import os
 
-load_dotenv()
-goog_api_key = os.getenv('GOOGLE_API_KEY') # create a variable in .env file 'GOOGLE_API_KEY' and add the api key there
+
+# FIX LATERRRR
+## --------------------------------------------------------
+
+# # re-implement later
+# load_dotenv()
+# goog_api_key = os.getenv('GOOGLE_API_KEY') # create a variable in .env file 'GOOGLE_API_KEY' and add the api key there
+
+# st.secrets for now
+goog_api_key = st.secrets['GOOGLE_API_KEY']
+
+#------------------------------------------------------------------------
 
 
 def recipe_generator(lists):
