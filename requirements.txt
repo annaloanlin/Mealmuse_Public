@@ -14,3 +14,4 @@ gradio-client
 flax
 streamlit
 groq
+google.generativeai
