@@ -15,3 +15,6 @@ flax
 streamlit
 groq
 google.generativeai
+dotenv
+os
+json
