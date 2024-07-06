@@ -15,6 +15,6 @@ flax
 streamlit
 groq
 google.generativeai
-dotenv.load_dotenv
+python-dotenv
 os
 json
