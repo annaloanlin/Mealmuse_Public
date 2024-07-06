@@ -292,13 +292,14 @@ if st.session_state['page3']:
 
     ingredients_combinations = combinations_of_two(ingredients_input)
     # ingredients_combinations = list containing tuples and lists
+    print('input ingredients:', ingredients_input)
 
     df_comb = data_query(ingredients_combinations)
     # df_comb = datafrome with 2 columns: 'Combination' and 'Score'
 
     ingredients_list = muse_comb(df_comb)
     # ingredients_list = list of 3 lists
-
+    print('muse_comb output in app.py:', ingredients_list)
 
 
 # ---------------------------------------------------------
@@ -316,7 +317,7 @@ if st.session_state['page3']:
             break
         except JSONDecodeError as e:
             attempt += 1
-    print('recipe_gen in app.py', len(recipe_list), 'recipe_list:', recipe_list)# debug code-------------------------------remove later
+    print('recipe_gen output in app.py: ', len(recipe_list), 'recipe_list:', recipe_list)# debug code-------------------------------remove later
 
     # recipe_list = recipe_generator(ingredients_list)
     # # recipe_list = list of 3 dictionaries
