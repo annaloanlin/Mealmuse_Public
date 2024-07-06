@@ -169,12 +169,16 @@ def recipe_generator(lists):
     recipe_list = []
 
     if len(lists) == 1:
-        response = model.generate_content(f"Suggest a recipe only with the ingredients of {lists[0]}. The final format is a json with keys of 'title', 'ingredients', 'directions' only, ```remove the backticks and json in the final output```")
+        response = model.generate_content(f"""
+                                          Suggest a recipe only with the ingredients of {lists[0]}. The final format is a json with KEYS of title, ingredients, directions and VALUES encoded with string format, ```remove the backticks and json in the final output```
+                                          """)
         recipe = response.text
         recipe_list.append( json.loads(recipe))
     else:
       for i in range(len(lists)):
-        response = model.generate_content(f"Suggest a recipe only with the ingredients of {lists[i]}. The final format is a json with keys of 'title', 'ingredients', 'directions' only, ```remove the backticks and json in the final output```")
+        response = model.generate_content(f"""
+                                          Suggest a recipe only with the ingredients of {lists[i]}. The final format is a json with KEYS of title, ingredients, directions and VALUES encoded with string format, ```remove the backticks and json in the final output```
+                                          """)
         recipe = response.text
         recipe_list.append( json.loads(recipe))
 
@@ -371,7 +375,7 @@ def image_generator(final_recipes):
     client = Client("ByteDance/SDXL-Lightning")
 
     titles = final_recipes['title']
-    print(titles)
+    print('image_generator titles', titles)
     image_urls = []
     for title in titles:
         result = client.predict(

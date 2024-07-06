@@ -316,7 +316,7 @@ if st.session_state['page3']:
             break
         except JSONDecodeError as e:
             attempt += 1
-    print(len(recipe_list), 'recipe_list:', recipe_list)# debug code-------------------------------remove later
+    print('recipe_gen in app.py', len(recipe_list), 'recipe_list:', recipe_list)# debug code-------------------------------remove later
 
     # recipe_list = recipe_generator(ingredients_list)
     # # recipe_list = list of 3 dictionaries
@@ -406,12 +406,12 @@ if st.session_state['page3']:
                 with col1:
                     st.subheader('Ingredients')
                     if index < len(final_recipes['ingredients']):
-                        st.write(final_recipes['ingredients'][index][0])
+                        st.write(final_recipes['ingredients'][index])
                         print('ingredients', final_recipes['ingredients'][index])
                 with col2:
                     st.subheader('Directions')
                     if index < len(final_recipes['directions']):
-                        st.write(final_recipes['directions'][index][0])
+                        st.write(final_recipes['directions'][index])
                         print('directions', final_recipes['directions'][index])
                 with col3:
                     st.subheader('Image')
